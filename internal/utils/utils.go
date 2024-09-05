@@ -26,6 +26,10 @@ func CopyToClipboard(text string) {
 	}
 }
 
+func Output(text string) {
+	fmt.Println(text)
+}
+
 func GetDescription() string {
 	fmt.Print("Enter branch description: ")
 	reader := bufio.NewReader(os.Stdin)
