@@ -14,4 +14,5 @@ func main() {
 	branchNames := branch.GenerateAndCleanBranchNames(llm, description, config.Username)
 	selectedBranch := branch.SelectBranchName(branchNames)
 	utils.CopyToClipboard(selectedBranch)
+	utils.Output(selectedBranch)
 }
