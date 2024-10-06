@@ -7,11 +7,11 @@
 
 ## v0.1.1
 
-- [ ] Config file support
+- [x] Config file support
   - Support for format of the branch name
   - Support for OpenAI API endpoint and secret
-- [ ] Allow user to use the config file to pass the OpenAI API endpoint and secret
-- [ ] Allow user to specify the branch format (by passing the format to the prompt in the config file)
+  - Support branch format (by passing the format to the prompt in the config file)
+- [ ] Allow user to pass the config file as an argument
 
 ## v0.1.2
 
