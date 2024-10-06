@@ -6,25 +6,31 @@ import (
 	"strings"
 	"time"
 
+	"github.com/1orzero/git-helper-cli/internal/config"
 	"github.com/1orzero/git-helper-cli/internal/utils"
 	"github.com/koki-develop/go-fzf"
 	"github.com/tmc/langchaingo/llms"
 )
 
-func GenerateAndCleanBranchNames(llm llms.Model, description, username string) []string {
-	branchNames, err := generateBranchNames(llm, description, username)
+func GenerateAndCleanBranchNames(llm llms.Model, description string, cfg config.Config) []string {
+	branchNames, err := generateBranchNames(llm, description, cfg)
 	if err != nil {
 		utils.HandleError("Error generating branch names", err)
 	}
 	return cleanBranchNames(branchNames)
 }
 
-func generateBranchNames(llm llms.Model, description, username string) ([]string, error) {
+func generateBranchNames(llm llms.Model, description string, cfg config.Config) ([]string, error) {
 	date := time.Now().Format("20060102")
-	prompt := fmt.Sprintf(`Generate 10 git branch names based on this description: "%s".
-	The branch names should follow this format: %s/%s-description-in-kebab-case.
+	formattedDescription := formatDescription(description, cfg.Branch.DescriptionFormat, cfg.Branch.MaxDescriptionLength)
+
+	branchPattern := strings.ReplaceAll(cfg.Branch.Pattern, "${date}", date)
+	branchPattern = strings.ReplaceAll(branchPattern, "${description}", formattedDescription)
+
+	prompt := fmt.Sprintf(`Generate %d git branch names based on this description: "%s".
+	The branch names should follow this format: %s
 	The description part should be concise and use hyphens instead of spaces.
-	Each branch name should be unique.`, description, username, date)
+	Each branch name should be unique.`, cfg.Branch.NumSuggestions, description, branchPattern)
 
 	ctx := context.Background()
 	response, err := llms.GenerateFromSinglePrompt(ctx, llm, prompt)
@@ -33,6 +39,31 @@ func generateBranchNames(llm llms.Model, description, username string) ([]string
 	}
 
 	return strings.Split(response, "\n"), nil
+}
+
+func formatDescription(description, format string, maxLength int) string {
+	// Truncate description if it's too long
+	if len(description) > maxLength {
+		description = description[:maxLength]
+	}
+
+	// Convert to lowercase
+	description = strings.ToLower(description)
+
+	// Replace spaces with hyphens for kebab-case
+	if format == "kebab-case" {
+		description = strings.ReplaceAll(description, " ", "-")
+	}
+
+	// Remove any characters that aren't alphanumeric or hyphens
+	description = strings.Map(func(r rune) rune {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '-' {
+			return r
+		}
+		return -1
+	}, description)
+
+	return description
 }
 
 func cleanBranchNames(branchNames []string) []string {
