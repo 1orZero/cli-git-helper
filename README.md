@@ -6,9 +6,7 @@ A CLI tool to automate git related tasks by using OpenAI's completion API.
 
 ## Roadmap
 
-- [x] Generate branch names based on a description
-- [x] Allow user to specify the branch format (by passing the format to the prompt
-- [x] Generate a commit message based on the current directory staged files
+- [Roadmap Page](docs/roadmap.md)
 
 ## Usage
 
