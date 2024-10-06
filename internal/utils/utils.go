@@ -23,3 +23,7 @@ func CopyToClipboard(text string) {
 		fmt.Println("Branch name copied to clipboard!")
 	}
 }
+
+func Log(message string) {
+	fmt.Println(message)
+}
