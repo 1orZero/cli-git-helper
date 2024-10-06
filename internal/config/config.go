@@ -25,15 +25,17 @@ type BranchConfig struct {
 	NumSuggestions       int    `toml:"num_suggestions"`
 }
 
-func LoadConfig() (Config, error) {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return Config{}, fmt.Errorf("failed to get user home directory: %w", err)
+func LoadConfig(configPath string) (Config, error) {
+	if configPath == "" {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return Config{}, fmt.Errorf("failed to get user home directory: %w", err)
+		}
+		configPath = filepath.Join(homeDir, ".config", "git-helper-cli", "config.toml")
 	}
 
-	configPath := filepath.Join(homeDir, ".config", "git-helper-cli", "config.toml")
 	var config Config
-	_, err = toml.DecodeFile(configPath, &config)
+	_, err := toml.DecodeFile(configPath, &config)
 	if err != nil {
 		return Config{}, fmt.Errorf("failed to decode config file: %w", err)
 	}
