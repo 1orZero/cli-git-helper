@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/1orzero/git-helper-cli/internal/branch"
+	"github.com/1orzero/git-helper-cli/internal/cli"
 	"github.com/1orzero/git-helper-cli/internal/config"
 	"github.com/1orzero/git-helper-cli/internal/openai"
 	"github.com/1orzero/git-helper-cli/internal/utils"
@@ -14,8 +15,8 @@ func main() {
 		utils.HandleError("Error loading config", err)
 	}
 
-	// Get description from user input
-	description := utils.GetDescription()
+	// Get description from user input using the new cli module
+	description := cli.GetDescription()
 
 	// Initialize OpenAI client
 	llm := openai.InitializeOpenAIClient(config.API.APIEndpoint, config.API.APISecret)
@@ -28,5 +29,5 @@ func main() {
 	utils.CopyToClipboard(selectedBranch)
 
 	// Output the selected branch name
-	utils.Output(selectedBranch)
+	cli.Output(selectedBranch)
 }
