@@ -11,12 +11,14 @@
   - Support for format of the branch name
   - Support for OpenAI API endpoint and secret
   - Support branch format (by passing the format to the prompt in the config file)
-- [ ] Allow user to pass the config file as an argument
+- [x] Allow user to pass the config file as an argument
 
 ## v0.1.2
 
-- [ ] Help menu
-- [ ] Feature list menu
+- [x] Help menu
+- [x] Feature list menu
+- [ ] Add version number to the help menu
+
 
 ## v0.1.3
 
