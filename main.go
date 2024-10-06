@@ -9,16 +9,19 @@ import (
 
 func main() {
 	// Load config from environment variables
-	config := config.LoadConfig()
+	config, err := config.LoadConfig()
+	if err != nil {
+		utils.HandleError("Error loading config", err)
+	}
 
 	// Get description from user input
 	description := utils.GetDescription()
 
 	// Initialize OpenAI client
-	llm := openai.InitializeOpenAIClient(config.APIEndpoint, config.APISecret)
+	llm := openai.InitializeOpenAIClient(config.API.APIEndpoint, config.API.APISecret)
 
 	// Generate 10 branch names based on the description
-	branchNames := branch.GenerateAndCleanBranchNames(llm, description, config.Username)
+	branchNames := branch.GenerateAndCleanBranchNames(llm, description, config)
 
 	// Select a branch name from the list (using fzf)
 	selectedBranch := branch.SelectBranchName(branchNames)
