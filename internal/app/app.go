@@ -1,4 +1,3 @@
-// File: internal/app/app.go
 package app
 
 import (
@@ -9,13 +8,16 @@ import (
 	ucli "github.com/urfave/cli/v2"
 )
 
+const Version = "v0.1.2"
+
 func NewApp() *ucli.App {
 	appState := &state.AppState{}
 
 	app := &ucli.App{
-		Name:  "git-helper",
-		Usage: "A CLI tool to help with git workflows",
-		Flags: cli.GlobalFlags(),
+		Name:    "git-helper",
+		Usage:   "A CLI tool to help with git workflows",
+		Version: Version,
+		Flags:   cli.GlobalFlags(),
 		Before: func(c *ucli.Context) error {
 			cfg, err := config.LoadConfig(c.String("config"))
 			if err != nil {

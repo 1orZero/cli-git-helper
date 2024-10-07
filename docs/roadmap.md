@@ -17,7 +17,7 @@
 
 - [x] Help menu
 - [x] Feature list menu
-- [ ] Add version number to the help menu
+- [x] Add version number to the help menu
 
 
 ## v0.1.3
