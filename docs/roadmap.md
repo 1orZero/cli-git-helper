@@ -18,6 +18,7 @@
 - [x] Help menu
 - [x] Feature list menu
 - [x] Add version number to the help menu
+- [ ] Add tab auto-complete subcommand
 
 
 ## v0.1.3
